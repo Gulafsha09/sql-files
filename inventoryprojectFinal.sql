@@ -1,7 +1,9 @@
--- creating database inventory
+-- creating database inventory which includes 5 tables- Supplier,products,stock,customers and orders.
 
 create database Inventory;
 use inventory;
+
+-- creating a function that generates id for every table
 
 create function ID (@A as char(1),@I as int)
 returns char(5)
@@ -22,19 +24,12 @@ begin
 	return @ID
 end;
 
-drop function ID;
-
-
 -- creating a table with details of supplier of products and inserting values with the help of procedure and generating Id with the help of sequence 
 
 create sequence SSEQ
 as int
 start with 1
 increment by 1;
-
-drop sequence sseq;
-drop table supplier;
-
 
 create table supplier(
 SID CHAR(5), SNAME VARCHAR(30) NOT NULL,
@@ -59,6 +54,7 @@ end;
 
 addsupplier 'RAHUL ARORA', 'B302-Jay Maa Apt,Dwarka,Delhi','DELHI','9891720767','arorarahul89@gmail.com';
 
+-- adding primary key constraint for supplier id column (sid)
 
 ALTER TABLE SUPPLIER
 ALTER COLUMN SID CHAR(5) NOT NULL;
@@ -69,7 +65,7 @@ ADD CONSTRAINT pkID PRIMARY KEY (SID);
 
 Select * from supplier;
 
--- creating a table for product's details
+-- creating a table for product's details and inserting values with the help of procedure and generating Id with the help of sequence 
 
 create sequence pseq
 as int
@@ -82,6 +78,7 @@ PRICE INT CHECK (PRICE >0),
 CATEGORY VARCHAR (30) CHECK ( CATEGORY IN ('IT','HA','HC')),
 SID CHAR(5));
 
+-- adding primary key constraint for column product id (pid)
 ALTER TABLE PRODUCTS
 ALTER COLUMN PID CHAR(5) NOT NULL;
 
@@ -109,12 +106,13 @@ addproducts 'STOVE',4000,'HA','S0007';
 
 SELECT * FROM PRODUCTS;
 
+-- adding foreign key constraint by refrencing supplier id (sid) from table supplier
 
 alter table products
 add constraint fkID foreign key (SID) REFERENCES SUPPLIER (SID);
 
 
--- creating a table for stock details
+-- creating a table for stock details and inserting values with the help of procedure.
 
 create table stock(
 PID char(5),SQTY INT CHECK (SQTY>=0),
@@ -136,19 +134,20 @@ instock 'P0010',50,15,10;
 update stock set SQTY=2500
 where PID='P0010';
 
+-- adding foreign key constraint by refrencing product id (pid) from table products
+
 alter table stock
 add constraint fkID1 foreign key (PID) REFERENCES products (PID);
 
 select * from stock;
 
--- creating a table for customer details
+-- creating a table for customer details and inserting values with the help of procedure and generating Id with the help of sequence 
 
 create sequence cseq
 as int
 start with 9
 increment by 1;
 
-drop sequence cseq;
 
 create table customer(
 CID CHAR(5) primary key, CNAME VARCHAR(30) NOT NULL,
@@ -173,10 +172,11 @@ begin
 	select * from customer;
 end;
 
-drop procedure addcustomer;
 
 addcustomer 'kush chabra','SECTOR 31,GURGAON','gurgaon','9891720821','kush@gmail.com','dec 8,1986';
--- creating a table for Order details
+
+-- creating a table for Order details and inserting values with the help of procedure and generating Id with the help of sequence 
+
 create sequence oseq
 as int
 start with 1
@@ -208,7 +208,7 @@ end;
 drop procedure addorders;
 addorders 'P0007','C0003',40;
 
-
+-- adding 2 foreign key constraint by refrencing product id (pid) from table products and customer id(cid) from customer table
 
 alter table ORDERS
 add constraint fkID2 foreign key (CID) REFERENCES CUSTOMER (CID);
@@ -244,7 +244,6 @@ as
 	left join products
 	on orders.pid=products.pid;
 
-drop view bill;
 
 select * from bill;
 
@@ -302,8 +301,6 @@ begin
 		end;
 end;
 
-drop trigger Orderstockupdate;
-
 addorders 'P0007','C0005',200;
 
 -- creating a update trigger so that if there is any change in the order quantity after placing the order, 
@@ -338,7 +335,6 @@ begin
 		end;
 end;
 
-drop trigger Updatedorder;
 
 update orders set oqty=270
 where oid='o0012';
@@ -372,7 +368,6 @@ begin
 	where supplier.sid = @S
 end;
 
-drop procedure SupplierDetail;
 
 SupplierDetail 'S0001';
 
@@ -392,7 +387,6 @@ begin
 
 end;
 
-drop procedure CustomerDetail;
 
 CustomerDetail 'C0005';
 
