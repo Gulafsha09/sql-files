@@ -9,11 +9,9 @@ use vehicle_theft_db;
 
 create table location( location_id varchar(max),region varchar(max),country varchar(max),population varchar(max),density varchar(max));
 
-drop table stolen_vehicles;
 
 create table make_details(make_id varchar(max),make_name varchar(max),make_type varchar(max));
 
-drop table make_details;
 
 create table stolen_vehicles(vehicle_id varchar(max),vehicle_type varchar(max),make_id varchar(max),model_year varchar(max), vehicle_desc varchar(max), color varchar(max),
 date_stolen varchar(max),location_id varchar(max));
