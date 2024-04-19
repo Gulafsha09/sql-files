@@ -1,5 +1,5 @@
 # SQL-PROJECTS
-This repository contains two of my SQL projects.
+This repository contains three of my SQL projects.
 
 1- Inventory project- This project uses SQL queries in SQL management studio to deal with the details of customers, orders, stock supplier and stock available. I have used SQL to create tables and insert the required data. Created procedures and triggers to deal with the stock changes wrt to orders placed by customers.
 
